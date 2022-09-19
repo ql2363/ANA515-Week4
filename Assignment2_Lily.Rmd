@@ -1,0 +1,70 @@
+---
+title: "Assignment2"
+author: "Qingyuan Li"
+date: "2022-09-19"
+output: word_document
+theme: 
+  bootswatch: Flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Section 1: Description of Data
+
+The dataset I am using is the 2020 year's documented daily COVID cases and deaths data collected and published by New York Times. The primary data published are the daily cumulative number of cases and deaths reported in each county and state across the U.S. since the beginning of the pandemic, and I picked only the 2020 csv file. The data is the product of dozens of journalists working across several time zones to monitor news conferences, analyze data releases and seek clarification from public officials on how they categorize cases.This data is very helpful to study the most impactful COVID-19 cases/deaths surges and also the geographic time series of how it spreaded all over the US. The format is csv (a flat file). It is delimited by comma. It is not binary. 
+
+
+
+Section 2: Reading the Data into R
+
+```{r, include=FALSE}
+url <- "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties-2020.csv"
+data(package = "dplyr")
+covid <- read.csv(url)
+
+```
+
+
+Section 3: Clean the Data
+
+```{r, include=FALSE}
+date <- strptime(covid$date,"%Y-%m-%d")
+covid$date<-date
+
+# Change the format of date from character into date
+
+```
+
+Section 4: Characteristics of the Data
+
+This dataframe has `r nrow(covid)` rows and `r ncol(covid)` columns. The names of the columns and a brief description of each are in the table below:
+
+```{r, include=FALSE}
+library(knitr)
+name<-colnames(covid)
+describe<-c("Date of the record was documented","The county's name","The county's State","The FIPS code for the county","The accumulative number of cases reported eversince in this county","The accumulative number of deaths reported eversince in this county")
+x<-data.frame(name,describe)
+Table1<-kable(x,col.names = c('Name of columns','Descriptions'))
+```
+
+```{r,include=TRUE}
+Table1
+```
+
+Section 5: Summary Statistics
+
+```{r,include=FALSE}
+#pick three columns:
+
+studyset<-data.frame(covid$cases,covid$deaths,covid$fips)
+
+Table2<-summary(studyset)
+
+```
+
+```{r,include=TRUE}
+Table2
+```
